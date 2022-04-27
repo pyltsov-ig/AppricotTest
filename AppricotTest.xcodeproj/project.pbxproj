@@ -15,6 +15,7 @@
 		65BE0B602817E795004A3F05 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE0B5F2817E795004A3F05 /* MainViewController.swift */; };
 		65BE0B622817E7FD004A3F05 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE0B612817E7FD004A3F05 /* DetailViewController.swift */; };
 		65BE0B642817E85B004A3F05 /* JsonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE0B632817E85B004A3F05 /* JsonModel.swift */; };
+		65BE0B682817EE29004A3F05 /* CharacterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE0B672817EE29004A3F05 /* CharacterTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		65BE0B5F2817E795004A3F05 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		65BE0B612817E7FD004A3F05 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		65BE0B632817E85B004A3F05 /* JsonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonModel.swift; sourceTree = "<group>"; };
+		65BE0B672817EE29004A3F05 /* CharacterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				65BE0B5F2817E795004A3F05 /* MainViewController.swift */,
 				65BE0B612817E7FD004A3F05 /* DetailViewController.swift */,
 				65BE0B632817E85B004A3F05 /* JsonModel.swift */,
+				65BE0B672817EE29004A3F05 /* CharacterTableViewCell.swift */,
 			);
 			path = AppricotTest;
 			sourceTree = "<group>";
@@ -149,6 +152,7 @@
 				65BE0B4C2817E6ED004A3F05 /* AppDelegate.swift in Sources */,
 				65BE0B4E2817E6ED004A3F05 /* SceneDelegate.swift in Sources */,
 				65BE0B622817E7FD004A3F05 /* DetailViewController.swift in Sources */,
+				65BE0B682817EE29004A3F05 /* CharacterTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
