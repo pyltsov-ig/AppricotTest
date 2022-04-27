@@ -37,9 +37,6 @@ class MainViewController: UIViewController {
         
     }
     
-    @objc func buttonAction(sender: UIButton!) {
-        print("Next button tapped")
-    }
     
     @IBAction func backButtonAction(_ sender: UIButton) {
         if let unwrInfoBack = info.prev {
@@ -72,23 +69,16 @@ class MainViewController: UIViewController {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
         guard let unwrCharacterRow = characterTableView.indexPathForSelectedRow?.row,
               let unwrIndexPathRow = characterTableView.indexPathForSelectedRow else {return}
         
-        
         guard let destVC = segue.destination as? DetailViewController else {return}
         destVC.characterData = characterList[unwrCharacterRow]
         
-        
         characterTableView.deselectRow(at: unwrIndexPathRow, animated: true)
-        
-        
-        
     }
 }
 
@@ -104,6 +94,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = characterTableView.dequeueReusableCell(withIdentifier: "CharCell", for: indexPath) as? CharacterTableViewCell else {return UITableViewCell()}
+        
         cell.nameLabel.text = self.characterList[indexPath.row].name
         cell.speciesLabel.text = self.characterList[indexPath.row].species
         cell.genderLabel.text = self.characterList[indexPath.row].gender
@@ -142,16 +133,14 @@ extension MainViewController {
         guard let url = URL(string: apiUrlString) else {return}
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let unwrData = data else {return}
+            guard let unwrData = data, let response = response as? HTTPURLResponse, (200..<300) ~= response.statusCode, error == nil else {return}
             do {
                 let character = try JSONDecoder().decode(Character.self,from: unwrData)
                 guard let unwrCharracterList = character.results else {return}
                 self.characterList = unwrCharracterList
                 guard let unwrInfo = character.info else {return}
                 self.info = unwrInfo
-                
-                print(self.currentPage)
-               
+        
             } catch {
                 print(error)
             }
@@ -161,7 +150,5 @@ extension MainViewController {
         }
         task.resume()
     }
-    
-    
 }
 

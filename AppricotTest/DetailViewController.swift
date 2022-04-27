@@ -30,10 +30,10 @@ class DetailViewController: UIViewController {
         statusLabel.text = characterData.status
         
         switch characterData.status {
-        case "Alive": statusButton.backgroundColor = .green
-        case "unknown": statusButton.backgroundColor = .gray
-        case "Dead": statusButton.backgroundColor = .red
-        default: statusButton.backgroundColor = .gray
+            case "Alive": statusButton.backgroundColor = .green
+            case "unknown": statusButton.backgroundColor = .gray
+            case "Dead": statusButton.backgroundColor = .red
+            default: statusButton.backgroundColor = .gray
         }
         
         locationLabel.text = characterData.location?.name
@@ -49,14 +49,5 @@ class DetailViewController: UIViewController {
         } catch {
             print(error)
         }
-
-        
-        
-       
     }
-    
-    
-    
-
-
 }
