@@ -12,7 +12,14 @@ typealias GetComplited = () -> ()
 class MainViewController: UIViewController {
 
     @IBOutlet weak var characterTableView: UITableView!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var pageCounterLabel: UILabel!
     
+    var apiUrlString = "https://rickandmortyapi.com/api/character"
+    var currentPage = 1
+    
+    var info = Info()
     var characterList = [Result]()
     
     override func viewDidLoad() {
@@ -21,13 +28,51 @@ class MainViewController: UIViewController {
         characterTableView.delegate = self
         characterTableView.dataSource = self
         
+        getCharacterList {
+            self.characterTableView.reloadData()
+            self.updatePageStatus()
+        }
+
+        
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        getCharacterList {
-            self.characterTableView.reloadData()
+    @objc func buttonAction(sender: UIButton!) {
+        print("Next button tapped")
+    }
+    
+    @IBAction func backButtonAction(_ sender: UIButton) {
+        if let unwrInfoBack = info.prev {
+            apiUrlString = unwrInfoBack
+            currentPage -= 1
+            
+            getCharacterList {
+                self.characterTableView.reloadData()
+                self.updatePageStatus()
+            }
         }
+    }
+    
+    
+    @IBAction func nextButtonAction(_ sender: Any) {
+        if let unwrInfoNext = info.next {
+            apiUrlString = unwrInfoNext
+            currentPage += 1
+            
+            getCharacterList {
+                self.characterTableView.reloadData()
+                self.updatePageStatus()
+            }
+        }
+        
+    }
+    
+    func updatePageStatus() {
+        pageCounterLabel.text = "Page "+String(currentPage)+" from "+String(info.pages ?? 0)
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -38,12 +83,6 @@ class MainViewController: UIViewController {
         
         guard let destVC = segue.destination as? DetailViewController else {return}
         destVC.characterData = characterList[unwrCharacterRow]
-        
-//        guard let cell = characterTableView.dequeueReusableCell(withIdentifier: "CharCell", for: unwrCharacterRow) as? CharacterTableViewCell else {return}
-        
-        guard let cell = characterTableView.cellForRow(at: unwrIndexPathRow) else {return}
-        //destVC.avatar = cell.avatarImageView.image
-    
         
         
         characterTableView.deselectRow(at: unwrIndexPathRow, animated: true)
@@ -68,7 +107,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.nameLabel.text = self.characterList[indexPath.row].name
         cell.speciesLabel.text = self.characterList[indexPath.row].species
         cell.genderLabel.text = self.characterList[indexPath.row].gender
-        //cell.avatarImageView.image = UIImage(named: "1")
         let imageUrl = URL(string: self.characterList[indexPath.row].image ?? "")
         do {
             let data = try Data(contentsOf: imageUrl!)
@@ -77,7 +115,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         } catch {
             print(error)
         }
-        //let avatar =
+
         cell.avatarImageView.layer.cornerRadius = 120/2
         
         return cell
@@ -101,24 +139,19 @@ extension MainViewController {
     
     func getCharacterList(complition: @escaping GetComplited){
         
-        guard let url = URL(string: "https://rickandmortyapi.com/api/character") else {return}
+        guard let url = URL(string: apiUrlString) else {return}
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let unwrData = data else {return}
-            let jsonString = String(data: unwrData, encoding: .utf8)
-            //print(jsonString)
             do {
                 let character = try JSONDecoder().decode(Character.self,from: unwrData)
                 guard let unwrCharracterList = character.results else {return}
                 self.characterList = unwrCharracterList
+                guard let unwrInfo = character.info else {return}
+                self.info = unwrInfo
+                
+                print(self.currentPage)
                
-//                for item in charList {
-//                    self.characterList.append(item)
-//                }
-//                print(self.characterList.count)
-//                for item in self.characterList {
-//                    print(item.name)
-//                }
             } catch {
                 print(error)
             }

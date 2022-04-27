@@ -16,6 +16,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var genderLabes: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var statusButton: UIButton!
     
     var characterData:Result!
     var avatar:UIImage!
@@ -27,6 +28,14 @@ class DetailViewController: UIViewController {
         speciesLabel.text = characterData.species
         genderLabes.text = characterData.gender
         statusLabel.text = characterData.status
+        
+        switch characterData.status {
+        case "Alive": statusButton.backgroundColor = .green
+        case "unknown": statusButton.backgroundColor = .gray
+        case "Dead": statusButton.backgroundColor = .red
+        default: statusButton.backgroundColor = .gray
+        }
+        
         locationLabel.text = characterData.location?.name
         guard let episodesCount = characterData.episode?.count else {return}
         episodesLabel.text = String(episodesCount) + "  episodes"
